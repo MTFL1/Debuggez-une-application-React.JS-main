@@ -11,18 +11,28 @@ const Slider = () => {
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
   const nextCard = () => {
+    /*
     setTimeout(
       () => setIndex(index < byDateDesc.length ? index + 1 : 0),
       5000
     );
-  };
+  }; */
+  setTimeout(() => {
+    setIndex((index + 1) % (byDateDesc?.length || 0));
+  }, 5000);
+};
   useEffect(() => {
     nextCard();
   });
+// ajout de la fonctio pour generer la key unique
+  function generateUniqueKey() {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  }
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        <>
+       // ajout de key
+        <div key={`${event.date}-${generateUniqueKey()}`}>
           <div
             key={event.title}
             className={`SlideCard SlideCard--${
@@ -42,7 +52,7 @@ const Slider = () => {
             <div className="SlideCard__pagination">
               {byDateDesc.map((_, radioIdx) => (
                 <input
-                  key={`${event.id}`}
+                  key={`${generateUniqueKey()}`}
                   type="radio"
                   name="radio-button"
                   checked={idx === radioIdx}
@@ -50,7 +60,7 @@ const Slider = () => {
               ))}
             </div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );
