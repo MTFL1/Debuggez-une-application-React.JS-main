@@ -6,37 +6,35 @@ import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
-  const [index, setIndex] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
   const nextCard = () => {
-    /*
-    setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
-      5000
-    );
-  }; */
-  setTimeout(() => {
-    setIndex((index + 1) % (byDateDesc?.length || 0));
-  }, 5000);
-};
+    setTimeout(() => {
+      setActiveImageIndex((activeImageIndex + 1) % (byDateDesc?.length || 0));
+    }, 5000);
+  };
+  
   useEffect(() => {
     nextCard();
   });
-// ajout de la fonctio pour generer la key unique
+
+
+
+// ajout de la fonction pour generer la key unique
   function generateUniqueKey() {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-       // ajout de key
+       // ajout de generateUniqueKey
         <div key={`${event.date}-${generateUniqueKey()}`}>
           <div
             key={event.title}
             className={`SlideCard SlideCard--${
-              index === idx ? "display" : "hide"
+              activeImageIndex === idx ? "display" : "hide"
             }`}
           >
             <img src={event.cover} alt="forum" />
@@ -55,7 +53,8 @@ const Slider = () => {
                   key={`${generateUniqueKey()}`}
                   type="radio"
                   name="radio-button"
-                  checked={idx === radioIdx}
+                  checked={activeImageIndex === radioIdx}
+                  onChange={() => setActiveImageIndex(idx)} 
                 />
               ))}
             </div>
