@@ -12,5 +12,5 @@ export const MONTHS = {
   10: "novembre",
   11: "décembre",
 };
-
+// changement des clés du tableau 
 export const getMonth = (date) => MONTHS[date.getMonth()];

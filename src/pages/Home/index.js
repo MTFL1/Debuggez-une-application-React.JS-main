@@ -14,11 +14,23 @@ import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
   const { data } = useData();
-  // recuperer la dernier image du data
-  const last =
-    data && data.events && data.events.length > 0
-      ? data.events[data.events.length - 1]
-      : null;
+
+  if (!data || !data.events || data.events.length === 0) {
+    return null; 
+  }
+// Suit le dernier événement par rapport à la date
+let lastIndex = 0;
+let latestDate = new Date(data.events[0].date);
+
+for (let i = 1; i < data.events.length; ) {
+  const currentDate = new Date(data.events[i].date);
+  if (currentDate > latestDate) {
+    latestDate = currentDate;
+    lastIndex = i;
+  }
+  i += 1; 
+}
+  const lastEvent = data.events[lastIndex];
 
   return (
     <>
@@ -126,14 +138,14 @@ const Page = () => {
       <footer className="row">
         <div className="col presta">
           <h3>Notre derniére prestation</h3>
-          {last && (
+          {lastEvent && (
             <EventCard
-              imageSrc={last.cover}
-              imageAlt={last.description}
-              title={last.title}
-              date={new Date(last.date)}
+              imageSrc={lastEvent.cover}
+              imageAlt={lastEvent.description} // ajout de alt
+              title={lastEvent.title}
+              date={new Date(lastEvent.date)}
               small
-              label={last.type}
+              label={lastEvent.type} // ajout de lastEvent.type
             />
           )}
         </div>

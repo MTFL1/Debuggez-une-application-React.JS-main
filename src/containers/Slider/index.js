@@ -12,7 +12,7 @@ const Slider = () => {
   );
   const nextCard = () => {
     setTimeout(() => {
-      setActiveImageIndex((activeImageIndex + 1) % (byDateDesc?.length || 0));
+      setActiveImageIndex((activeImageIndex + 1) % (byDateDesc?.length || 0)); // ajout de + 1
     }, 5000);
   };
   
@@ -29,7 +29,7 @@ const Slider = () => {
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-       // ajout de generateUniqueKey
+       // ajout de event.date et generateUniqueKey
         <div key={`${event.date}-${generateUniqueKey()}`}>
           <div
             key={event.title}
@@ -50,7 +50,7 @@ const Slider = () => {
             <div className="SlideCard__pagination">
               {byDateDesc.map((_, radioIdx) => (
                 <input
-                  key={`${generateUniqueKey()}`}
+                  key={`${generateUniqueKey()}`}// ajout de generateUniqueKey
                   type="radio"
                   name="radio-button"
                   checked={activeImageIndex === radioIdx}
